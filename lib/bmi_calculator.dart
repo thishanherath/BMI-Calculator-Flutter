@@ -1,4 +1,5 @@
 import 'package:demo/constant.dart';
+import 'package:demo/gender_tile_widget.dart';
 import 'package:flutter/material.dart';
 
 class BMICalculatorPage extends StatefulWidget {
@@ -38,98 +39,43 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
       appBar: AppBar(
         backgroundColor: KBackgroundColor,
         foregroundColor: KActiveTextColor,
+        centerTitle: true,
         title: const Text('BMI Calculator'),
       ),
       backgroundColor: KBackgroundColor,
-      body: SizedBox(
-        // color: Colors.yellow,
-        width: double.infinity,
-
+      body: Padding(
+        padding: const EdgeInsets.all(32),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Expanded(
                       // flex: 10,
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isMale = true;
-                          });
-                          var bmiValue = calculateBMI(weight: weight, height: height);
-                          setState(() {
-                            bmi = bmiValue;
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration: isMale
-                              ? KSelectedTileBorderDecoration
-                              : KTileBorderDecoration,
-                          child: const Column(
-                            children: [
-                              Icon(
-                                Icons.male,
-                                size: 50,
-                                color: KActiveTextColor,
-                              ),
-                              Text(
-                                "Male",
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  color: KActiveTextColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                      child: GenderTileWidget(
+                        text: "Male",
+                        icon: Icons.male,
+                        isMale: isMale,
+                        onTap: onTapTile,
                       ),
                     ),
-
+        
                     // Spacer(),
                     const SizedBox(
                       width: 5,
                     ),
-
+        
                     Expanded(
                       // flex: 10,
-                      child: GestureDetector(
+                      child: GenderTileWidget(
+                        text: "Female",
+                        icon: Icons.female,
+                        isMale: !isMale,
                         onTap: () {
                           setState(() {
                             isMale = false;
                           });
-                          var bmiValue = calculateBMI(weight: weight, height: height);
-                          setState(() {
-                            bmi = bmiValue;
-                          });
                         },
-                        child: Container(
-                          decoration: !isMale
-                              ? KSelectedTileBorderDecoration
-                              : KTileBorderDecoration,
-                          padding: const EdgeInsets.all(20),
-                          child: const Column(
-                            children: [
-                              Icon(
-                                Icons.female,
-                                size: 50,
-                                color: KActiveTextColor,
-                              ),
-                              Text(
-                                "Female",
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  color: KActiveTextColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ),
                     ),
                   ]),
@@ -331,13 +277,14 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                       ),
                     ],
                   ),
-                ],
+        
+              const SizedBox(
+                height: 20,
               ),
-            ),
 
             Container(
               decoration: KTileBorderDecoration,
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
                   Text(
@@ -359,9 +306,9 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                 ],
               ),
             ),
-
+        
             // const Spacer(),
-
+        
             // Row(
             //   children: [
             //     Expanded(
@@ -391,4 +338,15 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
       ),
     );
   }
+
+  onTapTile() {
+                        setState(() {
+                          isMale = true;
+  
+                          var bmiValue = calculateBMI(weight: weight, height: height);
+                          setState(() {
+                            bmi = bmiValue;
+                          });
+                        });
+                      }
 }
