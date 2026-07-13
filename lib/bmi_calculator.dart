@@ -13,19 +13,15 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
   double height = 183;
   int weight = 75;
   int age = 30;
+  double bmi = 0;
 
-
-
-
+  double calculateBMI({required int weight, required double height}) {
+    double heightInMeters = height / 100;
+    return weight / (heightInMeters * heightInMeters);
+  }
 
   @override
   Widget build(BuildContext context) {
-    
-    
-
-
-
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: KBackgroundColor,
@@ -53,14 +49,12 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                           setState(() {
                             isMale = true;
                           });
-                        } 
-                        ,
+                        },
                         child: Container(
                           padding: const EdgeInsets.all(20),
                           decoration: isMale
                               ? KSelectedTileBorderDecoration
-                              : KTileBorderDecoration
-                          ,
+                              : KTileBorderDecoration,
                           child: const Column(
                             children: [
                               Icon(
@@ -93,13 +87,11 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                           setState(() {
                             isMale = false;
                           });
-                        } 
-                        ,
+                        },
                         child: Container(
                           decoration: !isMale
                               ? KSelectedTileBorderDecoration
-                              : KTileBorderDecoration
-                          ,
+                              : KTileBorderDecoration,
                           padding: const EdgeInsets.all(20),
                           child: const Column(
                             children: [
@@ -122,7 +114,7 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                     ),
                   ]),
                   SizedBox(
-                    height: 25,
+                    height: 20,
                   ),
                   Container(
                     decoration: KTileBorderDecoration,
@@ -139,7 +131,7 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              height.toStringAsFixed(2),
+                              height.toStringAsFixed(1),
                               style: TextStyle(
                                   color: KActiveTextColor, fontSize: 50),
                             ),
@@ -167,7 +159,7 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 25,
+                    height: 20,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -185,8 +177,8 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                                 ),
                               ),
                               Text(
-                                "75",
-                                style: TextStyle(
+                                "$weight",
+                                style: const TextStyle(
                                     color: KActiveTextColor,
                                     fontSize: 50,
                                     fontWeight: FontWeight.bold),
@@ -199,8 +191,14 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                                     backgroundColor: KBackgroundColor,
                                     shape: ShapeBorder.lerp(
                                         CircleBorder(), CircleBorder(), 0.5),
-                                    onPressed: () {},
-                                    child: Icon(Icons.add,
+                                    onPressed: () {
+                                      setState(() {
+                                        if (weight > 25) {
+                                          weight--;
+                                        }
+                                      });
+                                    },
+                                    child: Icon(Icons.remove,
                                         color: KActiveTextColor),
                                   ),
                                   const SizedBox(
@@ -211,8 +209,14 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                                     backgroundColor: KBackgroundColor,
                                     shape: ShapeBorder.lerp(
                                         CircleBorder(), CircleBorder(), 0.5),
-                                    onPressed: () {},
-                                    child: Icon(Icons.remove,
+                                    onPressed: () {
+                                      setState(() {
+                                        if (weight < 200) {
+                                          weight++;
+                                        }
+                                      });
+                                    },
+                                    child: Icon(Icons.add,
                                         color: KActiveTextColor),
                                   ),
                                 ],
@@ -237,7 +241,7 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                                 ),
                               ),
                               Text(
-                                "30",
+                                "$age",
                                 style: TextStyle(
                                     color: KActiveTextColor,
                                     fontSize: 50,
@@ -251,8 +255,14 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                                     backgroundColor: KBackgroundColor,
                                     shape: ShapeBorder.lerp(
                                         CircleBorder(), CircleBorder(), 0.5),
-                                    onPressed: () {},
-                                    child: Icon(Icons.add,
+                                    onPressed: () {
+                                      setState(() {
+                                        if (age > 10) {
+                                          age--;
+                                        }
+                                      });
+                                    },
+                                    child: Icon(Icons.remove,
                                         color: KActiveTextColor),
                                   ),
                                   const SizedBox(
@@ -263,8 +273,14 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                                     backgroundColor: KBackgroundColor,
                                     shape: ShapeBorder.lerp(
                                         CircleBorder(), CircleBorder(), 0.5),
-                                    onPressed: () {},
-                                    child: Icon(Icons.remove,
+                                    onPressed: () {
+                                      setState(() {
+                                        if (age < 100) {
+                                          age++;
+                                        }
+                                      });
+                                    },
+                                    child: Icon(Icons.add,
                                         color: KActiveTextColor),
                                   ),
                                 ],
@@ -278,15 +294,44 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 25,
+            
+
+
+            Container(
+              decoration: KTileBorderDecoration,
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  Text(
+                    "BMI Result",
+                    style: TextStyle(
+                      color: KActiveTextColor,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    bmi.toStringAsFixed(1),
+                    style: const TextStyle(
+                        color: KActiveTextColor,
+                        fontSize: 50,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
-            Spacer(),
+
+            const Spacer(),
+
             Row(
               children: [
                 Expanded(
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      bmi = calculateBMI(weight: weight, height: height);
+                      setState(() {});
+                    },
                     style: TextButton.styleFrom(
                       backgroundColor: KButtonColor,
                       shape: const RoundedRectangleBorder(),
